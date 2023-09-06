@@ -6,18 +6,17 @@ FROM node:14-alpine as builder
 
 WORKDIR /app
 
+# Copier tous les fichiers du projet dans le répertoire de travail
 # Installer les dépendances du projet
+
+COPY ./try .
 
 RUN npm install
 
-# Copier tous les fichiers du projet dans le répertoire de travail
-
-COPY . .
-
 # Exécuter la commande de build du projet
 
-RUN npm run build
 
+RUN npm run build 
 # Étape 2 : Utiliser une image légère basée sur Nginx pour servir l'application buildée
 
 FROM nginx:alpine
