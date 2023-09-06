@@ -5,8 +5,8 @@ Ce dépôt est destiné à accueillir le code source du script terraform qui cre
 * Superviseur: Mr Arouna rashid
 * Contributeurs
     * Cherif
-    * Roberto
-	* patrice
+    * patrice
+	* Roberto
    
 ## Stack
 ce projet est programmé en **HCL** 
@@ -17,8 +17,8 @@ ce projet est programmé en **HCL**
 Avant de commencer à travailler, chacun doit se rassurer au préalable d'avoir récupérer les travaux de ses collaborateurs afin que toute l'équipe ai la même base de code. De ce fait, le workflow quotidien doit être le suivant
 ```bash
 git checkout {{branch}} // branch est votre branche
-git pull origin devs
-git merge devs {{branch}}
+git pull origin main
+git merge main {{branch}}
 // commit 1
 // commit 2
 git push origin {{branch}}
