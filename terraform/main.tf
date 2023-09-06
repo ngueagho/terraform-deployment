@@ -22,7 +22,7 @@ resource "docker_image" "my_react_app" {
   name          = "my-react-app"
   build         = {
     context    = "${path.module}/react-app"  # Chemin vers le répertoire contenant votre projet React
-    dockerfile = "./Dockerfile"  # Chemin vers votre fichier Dockerfile existant
+    dockerfile = "./../Dockerfile"  # Chemin vers votre fichier Dockerfile existant
   }
   keep_locally  = false
 }
