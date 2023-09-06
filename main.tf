@@ -32,8 +32,9 @@ provider "kubernetes" {
 resource "docker_image" "my_react_app" {
   name = "my-react-app"
   build {
-    context    = "${path.module}/react-app" # Chemin vers le répertoire contenant votre projet React
-    dockerfile = "./Dockerfile"             # Chemin vers votre fichier Dockerfile existant
+    # Chemin vers le répertoire contenant votre projet React
+    context    = "./Dockerfile"
+    dockerfile = "./Dockerfile" # Chemin vers votre fichier Dockerfile existant
   }
   keep_locally = true
 }
@@ -57,31 +58,42 @@ resource "docker_container" "react" {
 # Création du déploiement Kubernetes
 
 
-resource "kubernetes_deployment" "my_react_app_deployment" {
+resource "kubernetes_deployment" "react_deployment" {
   metadata {
     name = "my-react-app-deployment"
 
+    namespace = "cherif"
+
+    labels = {
+      "app" = "my-react-app"
+
+    }
 
   }
 
   spec {
+
     selector {
+
       match_labels = {
-        app = "my-react-app"
+        "app" = "my-react-app"
+
       }
+
     }
 
     template {
       metadata {
+        namespace = "cherif"
         labels = {
-          app = "my-react-app"
+          "app" = "my-react-app"
         }
       }
 
       spec {
         container {
           name  = "my-react-app-container"
-          image = docker_image.my_react_app.name
+          image = "cherif1/my-react-app"
 
           # Options facultatives pour personnaliser le conteneur
           port {
@@ -92,3 +104,4 @@ resource "kubernetes_deployment" "my_react_app_deployment" {
     }
   }
 }
+
