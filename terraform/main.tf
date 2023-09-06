@@ -1,5 +1,11 @@
-# Définition du fournisseur Kubernetes
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
 
+
+
+# Définition du fournisseur Kubernetes
+/* 
 terraform {
   required_providers {
     kubernetes = {
@@ -7,14 +13,12 @@ terraform {
     }
   }
   backend "kubernetes" {
+    namespace = "roberto"
     config_path   = "~/.kube/config"
     secret_suffix = "react"
   }
-}
+} */
 
-provider "kubernetes" {
-  config_path = "~/.kube/config"
-}
 
 # Création de la ressource Docker image à partir du Dockerfile existant
 
@@ -33,6 +37,7 @@ resource "docker_image" "my_react_app" {
 resource "kubernetes_deployment" "my_react_app_deployment" {
   metadata {
     name = "my-react-app-deployment"
+    namespace = "roberto"
   }
 
   spec {
