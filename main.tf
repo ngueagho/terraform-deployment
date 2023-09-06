@@ -5,26 +5,53 @@ terraform {
     kubernetes = {
       source = "kubernetes"
     }
+
+    docker = {
+
+      source  = "kreuzwerker/docker"
+      version = "~> 3.0.1"
+    }
   }
   backend "kubernetes" {
     config_path   = "~/.kube/config"
     secret_suffix = "react"
+    namespace     = "cherif"
+
+
   }
 }
 
 provider "kubernetes" {
   config_path = "~/.kube/config"
+
+
 }
 
 # Création de la ressource Docker image à partir du Dockerfile existant
 
 resource "docker_image" "my_react_app" {
-  name          = "my-react-app"
-  build         = {
-    context    = "${path.module}/react-app"  # Chemin vers le répertoire contenant votre projet React
-    dockerfile = "./Dockerfile"  # Chemin vers votre fichier Dockerfile existant
+  name = "my-react-app"
+  build {
+    context    = "${path.module}/react-app" # Chemin vers le répertoire contenant votre projet React
+    dockerfile = "./Dockerfile"             # Chemin vers votre fichier Dockerfile existant
   }
-  keep_locally  = false
+  keep_locally = true
+}
+
+
+
+#configuration du contenair
+
+resource "docker_container" "react" {
+
+  image = docker_image.my_react_app.name
+  name  = "react"
+
+  ports {
+    internal = 80
+    external = 7000
+  }
+
 }
 
 # Création du déploiement Kubernetes
@@ -33,6 +60,8 @@ resource "docker_image" "my_react_app" {
 resource "kubernetes_deployment" "my_react_app_deployment" {
   metadata {
     name = "my-react-app-deployment"
+
+
   }
 
   spec {
@@ -52,7 +81,7 @@ resource "kubernetes_deployment" "my_react_app_deployment" {
       spec {
         container {
           name  = "my-react-app-container"
-          image = docker_image.my_react_app.latest
+          image = docker_image.my_react_app.name
 
           # Options facultatives pour personnaliser le conteneur
           port {
