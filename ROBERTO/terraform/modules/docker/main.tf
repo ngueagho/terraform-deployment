@@ -37,6 +37,6 @@ resource "docker_image" "example" {
 resource "docker_registry_auth" "dockerhub" {
   serveraddress = "https://index.docker.io/v1/"
   username      = "robertolandry"
-  password      = "@Tamanoir01"
+  password      = "kjfbdfkgfk23902"
   email         = "ngueaghotiodongrobertolandry@gmail.com"
 }
