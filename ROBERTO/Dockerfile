@@ -1,34 +1,20 @@
-FROM node
-
-# RUN npm init -y
-
-# # RUN npm install react
-
-# # RUN npm install react-dom
-
-# RUN node --version
-
-# RUN npm --version
-
-# RUN npx WORKETYAMO
-
-
-# FROM ubuntu:22.04
-
+FROM ubuntu:20.04
+# specifier l'image de base
 RUN apt update
-
-RUN  apt install npm
-
-RUN npm --version
-
-RUN node --version
-
-RUN npm -g install create-react-app
-
-RUN create-react-app --version
-
-RUN create-react-app WORKETYAMO
-
-RUN cd WORKETYAMO
-
-RUN npm start
+# la mette a jour 
+RUN apt install curl -y
+# installer l'outils curl
+RUN cd ~
+# changer de repertoire
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+# recuperer le packet de nodejs version 18
+RUN apt install nodejs -y
+# installer nodejs
+RUN npx create-react-app tiodong-app
+# creer une nouvelle app react
+WORKDIR /tiodong-app
+# specifier le dossier de travail pour la commande npm start 
+EXPOSE 3000
+# exposer le port 3000
+CMD ["npm", "start"]
+# specifier la commande a executer a la creation du conteneur
